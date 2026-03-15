@@ -1,1 +1,3273 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarKom — Locations Premium au Maroc</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     RESET & BASE
+  ============================================================ */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary:        #C9973A;
+    --primary-light:  #F5E6C8;
+    --primary-dark:   #9A7020;
+    --accent:         #E8572A;
+    --bg:             #FAFAF8;
+    --white:          #FFFFFF;
+    --text-dark:      #1A1A1A;
+    --text-mid:       #555550;
+    --text-light:     #888882;
+    --border:         #E8E8E2;
+    --card-shadow:    0 2px 20px rgba(0,0,0,0.08);
+    --hover-shadow:   0 8px 40px rgba(0,0,0,0.14);
+    --radius-sm:      8px;
+    --radius-md:      14px;
+    --radius-lg:      20px;
+    --radius-xl:      28px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+  a { text-decoration: none; color: inherit; }
+
+  img { display: block; max-width: 100%; }
+
+  /* ============================================================
+     ANIMATIONS
+  ============================================================ */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .anim-1 { animation: fadeInUp .6s ease both; }
+  .anim-2 { animation: fadeInUp .6s .1s ease both; }
+  .anim-3 { animation: fadeInUp .6s .2s ease both; }
+  .anim-4 { animation: fadeInUp .6s .3s ease both; }
+
+  /* ============================================================
+     NAVBAR — DESKTOP
+  ============================================================ */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(250,250,248,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-logo-mark {
+    background: var(--primary);
+    color: #fff;
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    color: var(--text-mid);
+    font-weight: 500;
+    transition: color .2s;
+  }
+
+  .nav-links a:hover { color: var(--primary-dark); }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .btn-ghost {
+    font-size: 14px;
+    color: var(--text-mid);
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: color .2s;
+  }
+
+  .btn-ghost:hover { color: var(--primary-dark); }
+
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background .2s, transform .1s;
+  }
+
+  .btn-primary:hover  { background: var(--primary-dark); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  /* ============================================================
+     FLOATING SEARCH — MOBILE
+  ============================================================ */
+  .floating-search {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 150;
+    padding: 12px 16px;
+    background: rgba(250,250,248,0.95);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    animation: slideDown .3s ease;
+  }
+
+  .float-search-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 10px 16px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .float-search-icon { font-size: 17px; }
+
+  .float-search-inner input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    background: none;
+    color: var(--text-dark);
+  }
+
+  .float-search-inner input::placeholder { color: var(--text-light); }
+
+  .float-search-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: background .2s;
+  }
+
+  .float-search-btn:hover { background: var(--primary-dark); }
+
+  /* ============================================================
+     HERO
+  ============================================================ */
+  .hero {
+    padding: 120px 32px 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 7px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+
+  .hero-badge-dot {
+    width: 6px; height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+  }
+
+  .hero h1 {
+    font-size: 56px;
+    line-height: 1.08;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 18px;
+  }
+
+  .hero h1 em {
+    color: var(--primary);
+    font-style: italic;
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--text-mid);
+    line-height: 1.75;
+    margin-bottom: 36px;
+    max-width: 440px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 36px;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text-dark);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-light);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Hero visual */
+  .hero-visual {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    height: 500px;
+    background: linear-gradient(135deg, #e8d5b0 0%, #c9973a22 50%, #d4b483 100%);
+    flex-shrink: 0;
+  }
+
+  .hero-visual img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease;
+    display: block;
+  }
+
+  .hero-visual:hover img { transform: scale(1.03); }
+
+  .hero-overlay-card {
+    position: absolute;
+    bottom: 24px; left: 24px; right: 24px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .overlay-info h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .overlay-info .loc {
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  .overlay-stars {
+    color: var(--primary);
+    font-size: 12px;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .overlay-price {
+    text-align: right;
+  }
+
+  .overlay-price strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: block;
+  }
+
+  .overlay-price span {
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .overlay-price .btn-primary {
+    margin-top: 8px;
+    padding: 7px 16px;
+    font-size: 12px;
+  }
+
+  /* ============================================================
+     SEARCH BOX — DESKTOP
+  ============================================================ */
+  .search-section {
+    padding: 0 32px 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .search-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    box-shadow: var(--card-shadow);
+  }
+
+  .search-field {
+    padding: 14px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    transition: background .15s;
+  }
+
+  .search-field:hover { background: var(--bg); }
+
+  .search-field + .search-field {
+    border-left: 1px solid var(--border);
+  }
+
+  .search-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: var(--text-light);
+  }
+
+  .search-input {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-dark);
+    background: none;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+  }
+
+  .search-input::placeholder {
+    color: var(--text-light);
+    font-weight: 400;
+  }
+
+  .search-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background .2s, transform .1s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover  { background: var(--primary-dark); }
+  .search-btn:active { transform: scale(0.98); }
+
+  /* ============================================================
+     SECTIONS
+  ============================================================ */
+  .section {
+    padding: 0 32px 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+
+  .section-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .see-all {
+    font-size: 14px;
+    color: var(--primary-dark);
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 1.5px solid var(--primary-light);
+    padding-bottom: 1px;
+    transition: border-color .2s;
+  }
+
+  .see-all:hover { border-color: var(--primary); }
+
+  /* ============================================================
+     CATEGORY CHIPS
+  ============================================================ */
+  .categories {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+
+  .categories::-webkit-scrollbar { display: none; }
+
+  .cat-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 26px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all .22s;
+    white-space: nowrap;
+    min-width: 112px;
+    user-select: none;
+  }
+
+  .cat-chip:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .cat-chip.active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .cat-chip.active .cat-label {
+    color: var(--primary-dark);
+    font-weight: 600;
+  }
+
+  .cat-icon { font-size: 28px; }
+
+  .cat-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    transition: color .2s;
+  }
+
+  /* ============================================================
+     PROPERTY CARDS GRID
+  ============================================================ */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .prop-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform .25s, box-shadow .25s, border-color .25s;
+    animation: fadeInUp .5s ease both;
+  }
+
+  .prop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+    border-color: transparent;
+  }
+
+  .card-img {
+    position: relative;
+    height: 224px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e8d5b0, #c4a870);
+  }
+
+  .card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+  }
+
+  .prop-card:hover .card-img img { transform: scale(1.05); }
+
+  .card-badge {
+    position: absolute;
+    top: 14px; left: 14px;
+    background: var(--white);
+    border-radius: 50px;
+    padding: 5px 13px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+
+  .card-fav {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform .2s, background .2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: none;
+  }
+
+  .card-fav:hover {
+    transform: scale(1.15);
+    background: #fff;
+  }
+
+  .card-dots {
+    position: absolute;
+    bottom: 10px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+  }
+
+  .card-dot {
+    width: 5px; height: 5px;
+    background: rgba(255,255,255,.55);
+    border-radius: 50%;
+    transition: all .2s;
+  }
+
+  .card-dot.active {
+    background: #fff;
+    width: 14px;
+    border-radius: 3px;
+  }
+
+  .card-body {
+    padding: 16px 18px 20px;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .card-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  .card-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    white-space: nowrap;
+  }
+
+  .card-rating::before {
+    content: '★';
+    color: var(--primary);
+  }
+
+  .card-location {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 14px;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+
+  .card-price strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .card-price span {
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  .card-type-tag {
+    background: var(--bg);
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-mid);
+    border: 1px solid var(--border);
+  }
+
+  /* ============================================================
+     FEATURED SECTION
+  ============================================================ */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1.65fr 1fr;
+    gap: 22px;
+  }
+
+  .featured-main {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    position: relative;
+    height: 440px;
+    cursor: pointer;
+  }
+
+  .featured-main img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .5s;
+  }
+
+  .featured-main:hover img { transform: scale(1.04); }
+
+  .featured-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.72) 0%, transparent 65%);
+    padding: 36px 30px 30px;
+  }
+
+  .featured-overlay h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .featured-overlay p {
+    font-size: 14px;
+    color: rgba(255,255,255,.8);
+    margin-bottom: 18px;
+  }
+
+  .btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    color: var(--text-dark);
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background .2s, transform .1s;
+  }
+
+  .btn-white:hover { background: var(--primary-light); }
+
+  .featured-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .side-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    position: relative;
+    flex: 1;
+    min-height: 196px;
+    cursor: pointer;
+  }
+
+  .side-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .4s;
+  }
+
+  .side-card:hover img { transform: scale(1.05); }
+
+  .side-card-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.62), transparent);
+    padding: 18px;
+  }
+
+  .side-card-info h4 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .side-card-info p {
+    font-size: 13px;
+    color: rgba(255,255,255,.75);
+  }
+
+  /* ============================================================
+     CITIES GRID
+  ============================================================ */
+  .cities-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .city-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    position: relative;
+    height: 200px;
+    cursor: pointer;
+    transition: transform .25s;
+  }
+
+  .city-card:hover { transform: scale(1.03); }
+
+  .city-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .4s;
+  }
+
+  .city-card:hover img { transform: scale(1.07); }
+
+  .city-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.58) 0%, rgba(0,0,0,.08) 50%, transparent 100%);
+  }
+
+  .city-info {
+    position: absolute;
+    bottom: 16px; left: 16px;
+    z-index: 1;
+  }
+
+  .city-info h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .city-info p {
+    font-size: 13px;
+    color: rgba(255,255,255,.8);
+  }
+
+  /* ============================================================
+     TRUST STRIP
+  ============================================================ */
+  .trust-strip {
+    background: var(--primary-light);
+    padding: 48px 32px;
+    margin-bottom: 64px;
+  }
+
+  .trust-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    text-align: center;
+  }
+
+  .trust-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+  .trust-icon {
+    width: 52px; height: 52px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  .trust-item h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-dark);
+  }
+
+  .trust-item p {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  /* ============================================================
+     CTA BANNER
+  ============================================================ */
+  .cta-banner {
+    margin: 0 32px 64px;
+    max-width: calc(1200px - 64px);
+    margin-left: auto;
+    margin-right: auto;
+    background: var(--primary-dark);
+    border-radius: var(--radius-xl);
+    padding: 56px 64px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+
+  .cta-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: 160px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+
+  .cta-banner h2 {
+    font-size: 34px;
+    color: #fff;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .cta-banner p {
+    font-size: 16px;
+    color: rgba(255,255,255,.7);
+    line-height: 1.6;
+  }
+
+  .btn-cta {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 16px 32px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    transition: background .2s, transform .1s;
+    flex-shrink: 0;
+  }
+
+  .btn-cta:hover  { background: #b5832e; }
+  .btn-cta:active { transform: scale(0.98); }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  .footer {
+    background: var(--text-dark);
+    color: #fff;
+    padding: 64px 32px 32px;
+  }
+
+  .footer-inner { max-width: 1200px; margin: 0 auto; }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 52px;
+  }
+
+  .footer-brand h3 {
+    font-size: 26px;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+    color: rgba(255,255,255,.5);
+    line-height: 1.75;
+    max-width: 260px;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .social-btn {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,.08);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background .2s;
+  }
+
+  .social-btn:hover { background: rgba(255,255,255,.16); }
+
+  .footer-col h5 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: rgba(255,255,255,.38);
+    margin-bottom: 18px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-size: 14px;
+    color: rgba(255,255,255,.6);
+    margin-bottom: 12px;
+    transition: color .2s;
+  }
+
+  .footer-col a:hover { color: #fff; }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-size: 13px;
+    color: rgba(255,255,255,.38);
+  }
+
+  .footer-flag { font-size: 16px; }
+
+  /* ============================================================
+     MOBILE BOTTOM NAV
+  ============================================================ */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    z-index: 200;
+    padding: 8px 0;
+  }
+
+  .mobile-nav-inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .nav-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px 20px;
+    border-radius: 12px;
+    transition: background .15s;
+    min-width: 60px;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .nav-tab .tab-icon {
+    font-size: 22px;
+    color: var(--text-light);
+    transition: color .2s;
+  }
+
+  .nav-tab .tab-label {
+    font-size: 10px;
+    color: var(--text-light);
+    font-weight: 500;
+    letter-spacing: .2px;
+    transition: color .2s;
+  }
+
+  .nav-tab.active .tab-icon,
+  .nav-tab.active .tab-label {
+    color: var(--primary-dark);
+  }
+
+  .nav-tab.active .tab-label { font-weight: 600; }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 1024px) {
+    .hero { gap: 40px; }
+    .hero h1 { font-size: 44px; }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .cities-grid { grid-template-columns: repeat(3, 1fr); }
+    .trust-inner { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 100px 24px 48px;
+    }
+    .hero h1 { font-size: 38px; }
+    .hero-visual { height: 340px; }
+    .search-box {
+      grid-template-columns: 1fr;
+      border-radius: var(--radius-md);
+    }
+    .search-field + .search-field {
+      border-left: none;
+      border-top: 1px solid var(--border);
+    }
+    .featured-grid { grid-template-columns: 1fr; }
+    .featured-side { flex-direction: row; }
+    .cta-banner {
+      grid-template-columns: 1fr;
+      padding: 40px 32px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    body { padding-bottom: 72px; }
+    .nav { display: none; }
+    .floating-search { display: flex; }
+    .mobile-nav { display: block; }
+    .hero { padding: 76px 16px 36px; grid-template-columns: 1fr; }
+    .hero h1 { font-size: 32px; }
+    .hero-visual { display: none; }
+    .hero-desc { font-size: 15px; }
+    .hero-stats { gap: 24px; }
+    .search-section { padding: 0 16px 40px; }
+    .search-box { display: none; }
+    .section { padding: 0 16px 40px; }
+    .section-title { font-size: 24px; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .featured-grid { grid-template-columns: 1fr; }
+    .featured-main { height: 300px; }
+    .featured-side { flex-direction: column; }
+    .cities-grid { grid-template-columns: repeat(2, 1fr); }
+    .city-card { height: 150px; }
+    .trust-strip { padding: 36px 16px; }
+    .trust-inner { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .cta-banner { margin: 0 16px 48px; padding: 32px 24px; }
+    .cta-banner h2 { font-size: 24px; }
+    .footer { padding: 48px 16px 100px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  /* ============================================================
+     SCROLL REVEAL
+  ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity .65s ease, transform .65s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .2s; }
+  .reveal-delay-3 { transition-delay: .3s; }
+
+  /* ============================================================
+     PAGE SYSTEM
+  ============================================================ */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ============================================================
+     SEARCH RESULTS PAGE
+  ============================================================ */
+  .sr-header {
+    padding: 100px 32px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .sr-title { font-size: 14px; color: var(--text-light); margin-bottom: 6px; }
+  .sr-heading { font-size: 28px; font-weight: 700; color: var(--text-dark); }
+
+  .sr-toolbar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .sr-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .filter-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .filter-pill:hover, .filter-pill.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+  }
+
+  .sr-sort {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-mid);
+  }
+
+  .sr-sort select {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    cursor: pointer;
+    outline: none;
+  }
+
+  .sr-layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px 64px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  /* Sidebar filters */
+  .sidebar {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    position: sticky;
+    top: 80px;
+  }
+
+  .sidebar h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sidebar-reset {
+    font-size: 12px;
+    color: var(--primary-dark);
+    cursor: pointer;
+    font-weight: 500;
+    border-bottom: 1px solid var(--primary-light);
+  }
+
+  .filter-group { margin-bottom: 24px; }
+
+  .filter-group-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  .price-range {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .price-range input[type="range"] {
+    width: 100%;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+
+  .price-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-mid);
+    font-weight: 500;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-mid);
+    border-bottom: 1px solid var(--bg);
+    transition: color .2s;
+  }
+
+  .check-item:hover { color: var(--text-dark); }
+
+  .check-item input[type="checkbox"] {
+    accent-color: var(--primary);
+    width: 16px; height: 16px;
+    cursor: pointer;
+  }
+
+  .check-item span { flex: 1; }
+  .check-count {
+    font-size: 12px;
+    color: var(--text-light);
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 50px;
+  }
+
+  .amenity-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .amenity-tag {
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: var(--text-mid);
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    font-weight: 500;
+  }
+
+  .amenity-tag:hover, .amenity-tag.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+  }
+
+  .guest-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .guest-label { font-size: 14px; color: var(--text-mid); }
+
+  .guest-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .guest-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--white);
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-dark);
+    line-height: 1;
+  }
+
+  .guest-btn:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+
+  .guest-count {
+    font-size: 16px;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* Results grid */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .results-count {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+  }
+
+  .results-count strong { color: var(--text-dark); }
+
+  @media (max-width: 900px) {
+    .sr-layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; display: none; }
+    .results-grid { grid-template-columns: 1fr; }
+    .sr-header, .sr-toolbar, .sr-layout { padding-left: 24px; padding-right: 24px; }
+  }
+
+  @media (max-width: 640px) {
+    .sr-header { padding: 76px 16px 24px; }
+    .sr-toolbar { padding: 0 16px 16px; }
+    .sr-layout { padding: 0 16px 48px; }
+  }
+
+  /* ============================================================
+     PROPERTY DETAIL PAGE
+  ============================================================ */
+  .detail-hero {
+    margin-top: 64px;
+    position: relative;
+    height: 520px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 6px;
+    background: var(--text-dark);
+  }
+
+  .detail-hero-main {
+    grid-row: 1 / 3;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .detail-hero-main img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .4s;
+  }
+
+  .detail-hero-main:hover img { transform: scale(1.03); }
+
+  .detail-hero-thumb {
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .detail-hero-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .4s;
+  }
+
+  .detail-hero-thumb:hover img { transform: scale(1.05); }
+
+  .detail-hero-thumb:last-child::after {
+    content: 'Voir toutes les photos';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .detail-body {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 32px 120px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 56px;
+    align-items: start;
+  }
+
+  /* Left content */
+  .detail-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 16px;
+  }
+
+  .detail-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.15;
+  }
+
+  .detail-rating-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-light);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .detail-rating-badge strong {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  .detail-rating-badge span {
+    font-size: 13px;
+    color: var(--text-mid);
+  }
+
+  .detail-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .detail-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-mid);
+  }
+
+  .detail-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+
+  .host-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .host-avatar {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-light);
+    background: var(--primary-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .host-info h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .host-info p { font-size: 13px; color: var(--text-light); }
+
+  .host-badge {
+    margin-left: auto;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .detail-desc {
+    font-size: 15px;
+    color: var(--text-mid);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .read-more {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* Amenities */
+  .amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .amenity-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-mid);
+    padding: 12px 14px;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  .amenity-icon { font-size: 20px; }
+
+  /* Reviews */
+  .reviews-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .overall-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1;
+  }
+
+  .score-bars { flex: 1; }
+
+  .score-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--text-mid);
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 2px;
+    transition: width .8s ease;
+  }
+
+  .review-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .review-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px;
+  }
+
+  .review-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .reviewer-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    flex-shrink: 0;
+  }
+
+  .reviewer-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  .review-date {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+
+  .review-text {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.65;
+  }
+
+  /* Booking card */
+  .booking-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    position: sticky;
+    top: 88px;
+    box-shadow: var(--hover-shadow);
+  }
+
+  .booking-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .booking-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .booking-per-night {
+    font-size: 14px;
+    color: var(--text-light);
+  }
+
+  .booking-rating {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--text-mid);
+    font-weight: 500;
+  }
+
+  .booking-rating::before { content: '★ '; color: var(--primary); }
+
+  .date-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .date-cell {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+
+  .date-cell:hover { background: var(--bg); }
+
+  .date-cell + .date-cell { border-left: 1px solid var(--border); }
+
+  .date-cell-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+  }
+
+  .date-cell input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-dark);
+    background: none;
+    cursor: pointer;
+  }
+
+  .guest-row {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+
+  .guest-row:hover { border-color: var(--primary); }
+
+  .guest-row-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+  }
+
+  .guest-row-val {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+
+  .btn-reserve {
+    width: 100%;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background .2s, transform .1s;
+    margin-bottom: 16px;
+    letter-spacing: .3px;
+  }
+
+  .btn-reserve:hover  { background: var(--primary-dark); }
+  .btn-reserve:active { transform: scale(0.99); }
+
+  .booking-note {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+  }
+
+  .price-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--text-mid);
+  }
+
+  .price-row.total {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin-top: 4px;
+  }
+
+  /* Mobile Sticky Booking Bar */
+  .sticky-booking-bar {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 14px 20px;
+    z-index: 300;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  }
+
+  .sticky-price strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-dark);
+    display: block;
+  }
+
+  .sticky-price span {
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  .btn-sticky-reserve {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background .2s;
+  }
+
+  .btn-sticky-reserve:hover { background: var(--primary-dark); }
+
+  @media (max-width: 900px) {
+    .detail-hero {
+      height: 360px;
+      grid-template-columns: 1.5fr 1fr;
+    }
+    .detail-body {
+      grid-template-columns: 1fr;
+      padding: 28px 24px 140px;
+    }
+    .booking-card { display: none; }
+    .sticky-booking-bar { display: flex; }
+    .review-cards { grid-template-columns: 1fr; }
+    .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .detail-hero {
+      margin-top: 58px;
+      height: 280px;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3px;
+    }
+    .detail-body { padding: 20px 16px 140px; }
+    .detail-title { font-size: 24px; }
+    .amenities-grid { grid-template-columns: 1fr 1fr; }
+    .review-cards { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================================
+     BACK BUTTON (shared)
+  ============================================================ */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dark);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all .2s;
+    margin-bottom: 20px;
+  }
+
+  .back-btn:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+  }
+
+  /* ============================================================
+     SEARCH BAR HEADER (shared across pages)
+  ============================================================ */
+  .nav-search-pill {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 6px 6px 6px 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: box-shadow .2s;
+  }
+
+  .nav-search-pill:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .nav-search-pill span {
+    font-size: 14px;
+    color: var(--text-mid);
+    font-weight: 500;
+    padding-right: 14px;
+  }
+
+  .nav-search-pill span + span {
+    padding-left: 14px;
+    border-left: 1px solid var(--border);
+  }
+
+  .nav-search-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     DESKTOP NAVBAR (shared — always visible)
+============================================================ -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+    </div>
+    DarKom
+  </div>
+  <div class="nav-links">
+    <a href="#">Découvrir</a>
+    <a href="#">Comment ça marche</a>
+    <a href="#">Hôtes</a>
+    <a href="#">À propos</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-ghost">Connexion</button>
+    <button class="btn-primary">Publier un bien</button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     FLOATING SEARCH — MOBILE
+============================================================ -->
+<div class="floating-search">
+  <div class="float-search-inner">
+    <span class="float-search-icon">🔍</span>
+    <input type="text" placeholder="Où voulez-vous aller ?">
+    <button class="float-search-btn" onclick="goSearch()">→</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE: HOME
+============================================================ -->
+<div id="page-home" class="page active">
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero">
+  <div>
+    <div class="hero-badge anim-1">
+      <div class="hero-badge-dot"></div>
+      Locations Premium au Maroc
+    </div>
+    <h1 class="anim-2">Trouve ton<br><em>Dar</em> idéal<br>au Maroc</h1>
+    <p class="hero-desc anim-3">
+      Des riads de Marrakech aux villas de la côte d'Agadir —
+      des séjours uniques, soigneusement sélectionnés pour vous.
+    </p>
+    <div class="hero-stats anim-4">
+      <div>
+        <span class="stat-num">2 400+</span>
+        <span class="stat-label">Propriétés</span>
+      </div>
+      <div>
+        <span class="stat-num">18</span>
+        <span class="stat-label">Villes</span>
+      </div>
+      <div>
+        <span class="stat-num">4.9★</span>
+        <span class="stat-label">Note moyenne</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual anim-2">
+    <img
+      src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=900&h=600&fit=crop"
+      alt="Appartement Marrakech — intérieur marocain"
+      onerror="this.style.background='linear-gradient(135deg,#c9973a,#f5e6c8)'">
+    <div class="hero-overlay-card">
+      <div class="overlay-info">
+        <h4>Riad Al Baraka</h4>
+        <p class="loc">📍 Medina, Marrakech</p>
+        <div class="overlay-stars">★★★★★</div>
+      </div>
+      <div class="overlay-price">
+        <strong>1 200 MAD</strong>
+        <span>/nuit</span>
+        <button class="btn-primary">Réserver</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SEARCH BOX — DESKTOP
+============================================================ -->
+<div class="search-section">
+  <div class="search-box">
+    <div class="search-field">
+      <label class="search-label">Destination</label>
+      <input class="search-input" type="text" placeholder="Agadir, Marrakech, Essaouira…">
+    </div>
+    <div class="search-field">
+      <label class="search-label">Arrivée</label>
+      <input class="search-input" type="date">
+    </div>
+    <div class="search-field">
+      <label class="search-label">Départ</label>
+      <input class="search-input" type="date">
+    </div>
+    <button class="search-btn" onclick="handleSearch()">
+      🔍 Rechercher
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     CATEGORIES
+============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">Explorer par type</h2>
+    <a class="see-all" href="#">Voir tout</a>
+  </div>
+  <div class="categories" id="categories">
+    <div class="cat-chip active" onclick="filterCategory(this,'all')">
+      <span class="cat-icon">🏠</span>
+      <span class="cat-label">Tout</span>
+    </div>
+    <div class="cat-chip" onclick="filterCategory(this,'riad')">
+      <span class="cat-icon">🕌</span>
+      <span class="cat-label">Riad</span>
+    </div>
+    <div class="cat-chip" onclick="filterCategory(this,'villa')">
+      <span class="cat-icon">🏡</span>
+      <span class="cat-label">Villa</span>
+    </div>
+    <div class="cat-chip" onclick="filterCategory(this,'appartement')">
+      <span class="cat-icon">🏙️</span>
+      <span class="cat-label">Appartement</span>
+    </div>
+    <div class="cat-chip" onclick="filterCategory(this,'beachfront')">
+      <span class="cat-icon">🏖️</span>
+      <span class="cat-label">Beachfront</span>
+    </div>
+    <div class="cat-chip" onclick="filterCategory(this,'montagne')">
+      <span class="cat-icon">⛰️</span>
+      <span class="cat-label">Montagne</span>
+    </div>
+    <div class="cat-chip" onclick="filterCategory(this,'desert')">
+      <span class="cat-icon">🌵</span>
+      <span class="cat-label">Désert</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PROPERTY CARDS
+============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">Séjours populaires</h2>
+    <a class="see-all" href="#">Voir tout</a>
+  </div>
+  <div class="grid-3" id="propertiesGrid">
+
+    <!-- Card 1 — Riad Zitoun -->
+    <div class="prop-card" data-type="riad" onclick="showDetail('riad')">
+      <div class="card-img">
+        <img src="https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Riad Zitoun — riad Marrakech" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+        <div class="card-badge">⭐ Coup de cœur</div>
+        <button class="card-fav" onclick="toggleFav(this)" aria-label="Ajouter aux favoris">🤍</button>
+        <div class="card-dots"><div class="card-dot active"></div><div class="card-dot"></div><div class="card-dot"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-top"><div class="card-name">Riad Zitoun</div><div class="card-rating">4.96 <span style="color:var(--text-light);font-weight:400">(184)</span></div></div>
+        <div class="card-location">📍 Medina, Marrakech</div>
+        <div class="card-footer"><div class="card-price"><strong>950 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Riad</div></div>
+      </div>
+    </div>
+
+    <!-- Card 2 — Villa Brise Marine -->
+    <div class="prop-card" data-type="beachfront" onclick="showDetail('beachfront')">
+      <div class="card-img">
+        <img src="https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Villa Brise Marine — piscine vue mer" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+        <div class="card-badge">🔥 Nouveau</div>
+        <button class="card-fav" onclick="toggleFav(this)" aria-label="Ajouter aux favoris">🤍</button>
+        <div class="card-dots"><div class="card-dot active"></div><div class="card-dot"></div><div class="card-dot"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-top"><div class="card-name">Villa Brise Marine</div><div class="card-rating">4.88 <span style="color:var(--text-light);font-weight:400">(67)</span></div></div>
+        <div class="card-location">📍 Bord de mer, Agadir</div>
+        <div class="card-footer"><div class="card-price"><strong>2 100 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Beachfront</div></div>
+      </div>
+    </div>
+
+    <!-- Card 3 — Villa Nour -->
+    <div class="prop-card" data-type="villa" onclick="showDetail('villa')">
+      <div class="card-img">
+        <img src="https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Villa Nour — villa luxe piscine" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+        <button class="card-fav" onclick="toggleFav(this)" aria-label="Ajouter aux favoris">🤍</button>
+        <div class="card-dots"><div class="card-dot active"></div><div class="card-dot"></div><div class="card-dot"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-top"><div class="card-name">Villa Nour</div><div class="card-rating">4.92 <span style="color:var(--text-light);font-weight:400">(210)</span></div></div>
+        <div class="card-location">📍 Palmeraie, Marrakech</div>
+        <div class="card-footer"><div class="card-price"><strong>3 400 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Villa</div></div>
+      </div>
+    </div>
+
+    <!-- Card 4 — Appart Vue Mer -->
+    <div class="prop-card" data-type="appartement" onclick="showDetail('appartement')">
+      <div class="card-img">
+        <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Appart Vue Mer — intérieur marocain" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+        <div class="card-badge">💰 Bon plan</div>
+        <button class="card-fav" onclick="toggleFav(this)" aria-label="Ajouter aux favoris">🤍</button>
+        <div class="card-dots"><div class="card-dot active"></div><div class="card-dot"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-top"><div class="card-name">Appart Vue Mer</div><div class="card-rating">4.79 <span style="color:var(--text-light);font-weight:400">(93)</span></div></div>
+        <div class="card-location">📍 Marina, Casablanca</div>
+        <div class="card-footer"><div class="card-price"><strong>580 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Appartement</div></div>
+      </div>
+    </div>
+
+    <!-- Card 5 — Chalet Atlas -->
+    <div class="prop-card" data-type="montagne" onclick="showDetail('montagne')">
+      <div class="card-img">
+        <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Chalet Atlas — maison montagne Atlas" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+        <div class="card-badge">⭐ Coup de cœur</div>
+        <button class="card-fav" onclick="toggleFav(this)" aria-label="Ajouter aux favoris">🤍</button>
+        <div class="card-dots"><div class="card-dot active"></div><div class="card-dot"></div><div class="card-dot"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-top"><div class="card-name">Chalet Atlas</div><div class="card-rating">4.97 <span style="color:var(--text-light);font-weight:400">(142)</span></div></div>
+        <div class="card-location">📍 Imlil, Haut Atlas</div>
+        <div class="card-footer"><div class="card-price"><strong>1 650 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Montagne</div></div>
+      </div>
+    </div>
+
+    <!-- Card 6 — Sahara Luxury Camp -->
+    <div class="prop-card" data-type="desert" onclick="showDetail('desert')">
+      <div class="card-img">
+        <img src="https://images.pexels.com/photos/2901215/pexels-photo-2901215.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Sahara Luxury Camp — tente luxe désert marocain" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+        <div class="card-badge">🌟 Exclusif</div>
+        <button class="card-fav" onclick="toggleFav(this)" aria-label="Ajouter aux favoris">🤍</button>
+        <div class="card-dots"><div class="card-dot active"></div><div class="card-dot"></div><div class="card-dot"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-top"><div class="card-name">Sahara Luxury Camp</div><div class="card-rating">5.0 <span style="color:var(--text-light);font-weight:400">(58)</span></div></div>
+        <div class="card-location">📍 Erg Chebbi, Merzouga</div>
+        <div class="card-footer"><div class="card-price"><strong>2 800 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Désert</div></div>
+      </div>
+    </div>
+
+  </div><!-- /grid-3 -->
+</div>
+
+<!-- ============================================================
+     FEATURED DESTINATIONS
+============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">Destinations vedettes</h2>
+    <a class="see-all" href="#">Explorer</a>
+  </div>
+  <div class="featured-grid">
+    <div class="featured-main">
+      <img
+        src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=900&q=85&fit=crop&auto=format"
+        alt="Marrakech" loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1548018560-c7196548a81e?w=900&q=85&fit=crop&auto=format'">
+      <div class="featured-overlay">
+        <h3>Marrakech<br>La Perle Rouge</h3>
+        <p>Riads historiques, souks et jardins secrets</p>
+        <button class="btn-white">Explorer Marrakech →</button>
+      </div>
+    </div>
+    <div class="featured-side">
+      <div class="side-card">
+        <img src="https://images.pexels.com/photos/3876394/pexels-photo-3876394.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Agadir" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=85&fit=crop&auto=format'">
+        <div class="side-card-info">
+          <h4>Agadir</h4>
+          <p>38 biens disponibles</p>
+        </div>
+      </div>
+      <div class="side-card">
+        <img src="https://images.pexels.com/photos/3876394/pexels-photo-3876394.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Essaouira" loading="lazy" onerror="this.src='https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop'">
+        <div class="side-card-info">
+          <h4>Essaouira</h4>
+          <p>21 biens disponibles</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CITIES GRID
+============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">Explorez le Maroc</h2>
+    <a class="see-all" href="#" onclick="goSearch(); return false;">Voir tout</a>
+  </div>
+  <div class="cities-grid">
+
+    <!-- Agadir — plage Agadir corniche -->
+    <div class="city-card" onclick="goSearch('Agadir')">
+      <img src="https://images.pexels.com/photos/3876394/pexels-photo-3876394.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Agadir — plage et corniche"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Agadir</h4><p>38 biens disponibles</p></div>
+    </div>
+
+    <!-- Marrakech — Koutoubia / Place Jemaa el-Fna -->
+    <div class="city-card" onclick="goSearch('Marrakech')">
+      <img
+        src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=600&q=85&fit=crop&auto=format"
+        alt="Marrakech — Jemaa el-Fna"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1548018560-c7196548a81e?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Marrakech</h4><p>124 biens disponibles</p></div>
+    </div>
+
+    <!-- Fès — médina et tanneries -->
+    <div class="city-card" onclick="goSearch('Fès')">
+      <img src="https://images.pexels.com/photos/3889843/pexels-photo-3889843.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Fès — tanneries de la médina"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1548013146-72479768bada?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Fès</h4><p>64 biens disponibles</p></div>
+    </div>
+
+    <!-- Chefchaouen — la ville bleue -->
+    <div class="city-card" onclick="goSearch('Chefchaouen')">
+      <img src="https://images.pexels.com/photos/3889843/pexels-photo-3889843.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Chefchaouen — la ville bleue"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1553444836-bc6c8d340d56?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Chefchaouen</h4><p>29 biens disponibles</p></div>
+    </div>
+
+    <!-- Casablanca — Hassan II et skyline -->
+    <div class="city-card" onclick="goSearch('Casablanca')">
+      <img
+        src="https://images.pexels.com/photos/3876394/pexels-photo-3876394.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Casablanca — Mosquée Hassan II"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Casablanca</h4><p>117 biens disponibles</p></div>
+    </div>
+
+    <!-- Tanger — vue sur le détroit -->
+    <div class="city-card" onclick="goSearch('Tanger')">
+      <img
+        src="https://images.pexels.com/photos/3876394/pexels-photo-3876394.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Tanger — détroit de Gibraltar"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1559825481-12a05cc00344?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Tanger</h4><p>42 biens disponibles</p></div>
+    </div>
+
+    <!-- Essaouira — remparts et océan -->
+    <div class="city-card" onclick="goSearch('Essaouira')">
+      <img src="https://images.pexels.com/photos/3876394/pexels-photo-3876394.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Essaouira — remparts et port"
+        loading="lazy"
+        onerror="this.src='https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop'">
+      <div class="city-info"><h4>Essaouira</h4><p>21 biens disponibles</p></div>
+    </div>
+
+    <!-- Rabat — Tour Hassan -->
+    <div class="city-card" onclick="goSearch('Rabat')">
+      <img
+        src="https://images.pexels.com/photos/3876394/pexels-photo-3876394.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Rabat — Tour Hassan"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1571406384686-5c4fdf0c48f9?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Rabat</h4><p>53 biens disponibles</p></div>
+    </div>
+
+    <!-- Merzouga — dunes Erg Chebbi -->
+    <div class="city-card" onclick="goSearch('Merzouga')">
+      <img
+        src="https://images.pexels.com/photos/2901215/pexels-photo-2901215.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Merzouga — dunes Erg Chebbi"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1504233529578-6d46baba6d34?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Merzouga</h4><p>18 biens disponibles</p></div>
+    </div>
+
+    <!-- Ouarzazate — Aït Benhaddou -->
+    <div class="city-card" onclick="goSearch('Ouarzazate')">
+      <img
+        src="https://images.pexels.com/photos/3876394/pexels-photo-3876394.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Ouarzazate — Aït Benhaddou"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Ouarzazate</h4><p>23 biens disponibles</p></div>
+    </div>
+
+    <!-- Meknès — Bab Mansour -->
+    <div class="city-card" onclick="goSearch('Meknès')">
+      <img
+        src="https://images.pexels.com/photos/3889843/pexels-photo-3889843.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Meknès — Bab Mansour"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1548013146-72479768bada?w=600&q=85&fit=crop&auto=format'">
+      <div class="city-info"><h4>Meknès</h4><p>31 biens disponibles</p></div>
+    </div>
+
+    <!-- Tétouan — médina UNESCO -->
+    <div class="city-card" onclick="goSearch('Tétouan')">
+      <img
+        src="https://images.unsplash.com/photo-1548013146-72479768bada?w=600&q=85&fit=crop&auto=format"
+        alt="Tétouan — médina UNESCO"
+        loading="lazy"
+        onerror="this.src='https://images.pexels.com/photos/3933359/pexels-photo-3933359.jpeg?auto=compress&cs=tinysrgb&w=600'">
+      <div class="city-info"><h4>Tétouan</h4><p>17 biens disponibles</p></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     TRUST STRIP
+============================================================ -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <div class="trust-icon">🛡️</div>
+      <h4>Paiement sécurisé</h4>
+      <p>Vos paiements sont protégés et sécurisés à 100%</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">✅</div>
+      <h4>Biens vérifiés</h4>
+      <p>Chaque propriété est contrôlée par notre équipe</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">💬</div>
+      <h4>Support 24/7</h4>
+      <p>Notre équipe est disponible à toute heure</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🔄</div>
+      <h4>Annulation flexible</h4>
+      <p>Annulez gratuitement jusqu'à 48h avant l'arrivée</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CTA BANNER
+============================================================ -->
+<div class="cta-banner">
+  <div>
+    <h2>Vous avez un bien<br>à louer ?</h2>
+    <p>Rejoignez 1 800+ hôtes qui gagnent en moyenne<br>12 000 MAD/mois avec DarKom.</p>
+  </div>
+  <button class="btn-cta">Commencer à louer →</button>
+</div>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>DarKom</h3>
+        <p>La première plateforme de location courte durée premium dédiée au Maroc. Des séjours inoubliables, partout au royaume.</p>
+        <div class="footer-social">
+          <div class="social-btn">📘</div>
+          <div class="social-btn">📸</div>
+          <div class="social-btn">🐦</div>
+          <div class="social-btn">▶️</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Découvrir</h5>
+        <a href="#">Marrakech</a>
+        <a href="#">Agadir</a>
+        <a href="#">Fès</a>
+        <a href="#">Chefchaouen</a>
+        <a href="#">Essaouira</a>
+        <a href="#">Merzouga</a>
+      </div>
+      <div class="footer-col">
+        <h5>Hôtes</h5>
+        <a href="#">Publier un bien</a>
+        <a href="#">Guide hôte</a>
+        <a href="#">Assurance hôte</a>
+        <a href="#">Paiements</a>
+        <a href="#">Ressources</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="#">Centre d'aide</a>
+        <a href="#">Nous contacter</a>
+        <a href="#">Conditions d'utilisation</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Accessibilité</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 DarKom — Tous droits réservés</p>
+      <p>Made with ♡ in Morocco <span class="footer-flag">🇲🇦</span></p>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /page-home -->
+
+<!-- ============================================================
+     PAGE: SEARCH RESULTS
+============================================================ -->
+<div id="page-search" class="page">
+
+  <div class="sr-header">
+    <button class="back-btn" onclick="showPage('home')">← Retour</button>
+    <p class="sr-title">Résultats de recherche</p>
+    <h2 class="sr-heading" id="sr-heading">Toutes les propriétés</h2>
+  </div>
+
+  <div class="sr-toolbar">
+    <div class="sr-filters">
+      <button class="filter-pill active" onclick="pillFilter(this,'all')">Tout</button>
+      <button class="filter-pill" onclick="pillFilter(this,'riad')">🕌 Riad</button>
+      <button class="filter-pill" onclick="pillFilter(this,'villa')">🏡 Villa</button>
+      <button class="filter-pill" onclick="pillFilter(this,'appartement')">🏙️ Appartement</button>
+      <button class="filter-pill" onclick="pillFilter(this,'beachfront')">🏖️ Beachfront</button>
+      <button class="filter-pill" onclick="pillFilter(this,'montagne')">⛰️ Montagne</button>
+      <button class="filter-pill" onclick="pillFilter(this,'desert')">🌵 Désert</button>
+    </div>
+    <div class="sr-sort">
+      <span>Trier par</span>
+      <select onchange="sortResults(this.value)">
+        <option value="recommended">Recommandés</option>
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix décroissant</option>
+        <option value="rating">Mieux notés</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="sr-layout">
+
+    <!-- SIDEBAR FILTERS -->
+    <aside class="sidebar">
+      <h3>Filtres <span class="sidebar-reset" onclick="resetFilters()">Réinitialiser</span></h3>
+
+      <!-- Price -->
+      <div class="filter-group">
+        <div class="filter-group-title">Prix / nuit</div>
+        <div class="price-range">
+          <input type="range" min="200" max="5000" value="3000" id="priceSlider" oninput="updatePrice(this.value)">
+          <div class="price-labels">
+            <span>200 MAD</span>
+            <span id="priceMax">3 000 MAD</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Type -->
+      <div class="filter-group">
+        <div class="filter-group-title">Type de bien</div>
+        <label class="check-item"><input type="checkbox" checked> <span>Riad</span> <span class="check-count">14</span></label>
+        <label class="check-item"><input type="checkbox" checked> <span>Villa</span> <span class="check-count">32</span></label>
+        <label class="check-item"><input type="checkbox" checked> <span>Appartement</span> <span class="check-count">58</span></label>
+        <label class="check-item"><input type="checkbox"> <span>Beachfront</span> <span class="check-count">19</span></label>
+        <label class="check-item"><input type="checkbox"> <span>Montagne</span> <span class="check-count">11</span></label>
+        <label class="check-item"><input type="checkbox"> <span>Désert</span> <span class="check-count">6</span></label>
+      </div>
+
+      <!-- Guests -->
+      <div class="filter-group">
+        <div class="filter-group-title">Voyageurs</div>
+        <div class="guest-selector">
+          <span class="guest-label">Adultes</span>
+          <div class="guest-control">
+            <button class="guest-btn" onclick="changeGuests(-1)">−</button>
+            <span class="guest-count" id="guestCount">2</span>
+            <button class="guest-btn" onclick="changeGuests(1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amenities -->
+      <div class="filter-group">
+        <div class="filter-group-title">Équipements</div>
+        <div class="amenity-grid">
+          <div class="amenity-tag active" onclick="this.classList.toggle('active')">🏊 Piscine</div>
+          <div class="amenity-tag" onclick="this.classList.toggle('active')">📶 Wifi</div>
+          <div class="amenity-tag" onclick="this.classList.toggle('active')">🚗 Parking</div>
+          <div class="amenity-tag" onclick="this.classList.toggle('active')">❄️ Clim</div>
+          <div class="amenity-tag" onclick="this.classList.toggle('active')">🍳 Cuisine</div>
+          <div class="amenity-tag" onclick="this.classList.toggle('active')">🐾 Animaux</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RESULTS -->
+    <div>
+      <p class="results-count"><strong id="resultsCount">6</strong> propriétés disponibles</p>
+      <div class="results-grid" id="resultsGrid">
+
+        <div class="prop-card" data-type="riad" data-price="950" data-rating="4.96" onclick="showDetail('riad')">
+          <div class="card-img">
+            <img src="https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Riad Zitoun" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+            <div class="card-badge">⭐ Coup de cœur</div>
+            <button class="card-fav" onclick="toggleFav(this)">🤍</button>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><div class="card-name">Riad Zitoun</div><div class="card-rating">4.96 <span style="color:var(--text-light);font-weight:400">(184)</span></div></div>
+            <div class="card-location">📍 Medina, Marrakech</div>
+            <div class="card-footer"><div class="card-price"><strong>950 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Riad</div></div>
+          </div>
+        </div>
+
+        <div class="prop-card" data-type="beachfront" data-price="2100" data-rating="4.88" onclick="showDetail('beachfront')">
+          <div class="card-img">
+            <img src="https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Villa Brise Marine" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+            <div class="card-badge">🔥 Nouveau</div>
+            <button class="card-fav" onclick="toggleFav(this)">🤍</button>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><div class="card-name">Villa Brise Marine</div><div class="card-rating">4.88 <span style="color:var(--text-light);font-weight:400">(67)</span></div></div>
+            <div class="card-location">📍 Bord de mer, Agadir</div>
+            <div class="card-footer"><div class="card-price"><strong>2 100 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Beachfront</div></div>
+          </div>
+        </div>
+
+        <div class="prop-card" data-type="villa" data-price="3400" data-rating="4.92" onclick="showDetail('villa')">
+          <div class="card-img">
+            <img src="https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Villa Nour" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+            <button class="card-fav" onclick="toggleFav(this)">🤍</button>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><div class="card-name">Villa Nour</div><div class="card-rating">4.92 <span style="color:var(--text-light);font-weight:400">(210)</span></div></div>
+            <div class="card-location">📍 Palmeraie, Marrakech</div>
+            <div class="card-footer"><div class="card-price"><strong>3 400 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Villa</div></div>
+          </div>
+        </div>
+
+        <div class="prop-card" data-type="appartement" data-price="580" data-rating="4.79" onclick="showDetail('appartement')">
+          <div class="card-img">
+            <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Appart Vue Mer" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+            <div class="card-badge">💰 Bon plan</div>
+            <button class="card-fav" onclick="toggleFav(this)">🤍</button>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><div class="card-name">Appart Vue Mer</div><div class="card-rating">4.79 <span style="color:var(--text-light);font-weight:400">(93)</span></div></div>
+            <div class="card-location">📍 Marina, Casablanca</div>
+            <div class="card-footer"><div class="card-price"><strong>580 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Appartement</div></div>
+          </div>
+        </div>
+
+        <div class="prop-card" data-type="montagne" data-price="1650" data-rating="4.97" onclick="showDetail('montagne')">
+          <div class="card-img">
+            <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Chalet Atlas" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+            <div class="card-badge">⭐ Coup de cœur</div>
+            <button class="card-fav" onclick="toggleFav(this)">🤍</button>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><div class="card-name">Chalet Atlas</div><div class="card-rating">4.97 <span style="color:var(--text-light);font-weight:400">(142)</span></div></div>
+            <div class="card-location">📍 Imlil, Haut Atlas</div>
+            <div class="card-footer"><div class="card-price"><strong>1 650 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Montagne</div></div>
+          </div>
+        </div>
+
+        <div class="prop-card" data-type="desert" data-price="2800" data-rating="5.0" onclick="showDetail('desert')">
+          <div class="card-img">
+            <img src="https://images.pexels.com/photos/2901215/pexels-photo-2901215.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" alt="Sahara Luxury Camp" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c9973a44,#f5e6c8)'">
+            <div class="card-badge">🌟 Exclusif</div>
+            <button class="card-fav" onclick="toggleFav(this)">🤍</button>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><div class="card-name">Sahara Luxury Camp</div><div class="card-rating">5.0 <span style="color:var(--text-light);font-weight:400">(58)</span></div></div>
+            <div class="card-location">📍 Erg Chebbi, Merzouga</div>
+            <div class="card-footer"><div class="card-price"><strong>2 800 MAD</strong><span> /nuit</span></div><div class="card-type-tag">Désert</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div><!-- /page-search -->
+
+<!-- ============================================================
+     PAGE: PROPERTY DETAIL
+============================================================ -->
+<div id="page-detail" class="page">
+
+  <!-- Photo grid -->
+  <div class="detail-hero">
+    <div class="detail-hero-main">
+      <img id="detail-img-main"
+        src="https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=1200&h=700&fit=crop"
+        alt="Photo principale">
+    </div>
+    <div class="detail-hero-thumb">
+      <img id="detail-img-2"
+        src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Photo 2">
+    </div>
+    <div class="detail-hero-thumb">
+      <img id="detail-img-3"
+        src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+        alt="Photo 3">
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="detail-body">
+
+    <!-- LEFT: Content -->
+    <div>
+      <button class="back-btn" onclick="history.back(); showPage('search')">← Retour aux résultats</button>
+
+      <div class="detail-title-row">
+        <h1 class="detail-title" id="detail-title">Riad Zitoun</h1>
+        <div class="detail-rating-badge">
+          <span>★</span>
+          <strong id="detail-rating">4.96</strong>
+          <span id="detail-reviews">(184 avis)</span>
+        </div>
+      </div>
+
+      <div class="detail-meta">
+        <div class="detail-meta-item">🏠 <span id="detail-type">Riad entier</span></div>
+        <div class="detail-meta-item">👥 <span>6 voyageurs</span></div>
+        <div class="detail-meta-item">🛏️ <span>3 chambres</span></div>
+        <div class="detail-meta-item">🚿 <span>2 salles de bain</span></div>
+        <div class="detail-meta-item">📍 <span id="detail-location">Medina, Marrakech</span></div>
+      </div>
+
+      <div class="detail-divider"></div>
+
+      <!-- Host -->
+      <div class="host-row">
+        <div class="host-avatar">👨‍💼</div>
+        <div class="host-info">
+          <h4>Mohammed — Hôte Superhost</h4>
+          <p>Hôte depuis 4 ans · 98% de réponses</p>
+        </div>
+        <span class="host-badge">⭐ Superhost</span>
+      </div>
+
+      <div class="detail-divider"></div>
+
+      <!-- Description -->
+      <h3 style="font-size:20px;margin-bottom:14px;">À propos de ce logement</h3>
+      <p class="detail-desc" id="detail-desc">
+        Niché au cœur de la Medina de Marrakech, ce riad authentique du 18ème siècle a été
+        soigneusement restauré pour allier le charme traditionnel marocain au confort moderne.
+        Vous serez accueillis par un patio verdoyant avec fontaine, des salons ornés de zellige
+        et une terrasse avec vue panoramique sur les toits de la ville.
+      </p>
+      <span class="read-more">Lire la suite →</span>
+
+      <div class="detail-divider"></div>
+
+      <!-- Amenities -->
+      <h3 style="font-size:20px;margin-bottom:16px;">Ce que propose ce logement</h3>
+      <div class="amenities-grid">
+        <div class="amenity-item"><span class="amenity-icon">🏊</span> Piscine chauffée</div>
+        <div class="amenity-item"><span class="amenity-icon">📶</span> Wifi haut débit</div>
+        <div class="amenity-item"><span class="amenity-icon">❄️</span> Climatisation</div>
+        <div class="amenity-item"><span class="amenity-icon">🍳</span> Cuisine équipée</div>
+        <div class="amenity-item"><span class="amenity-icon">🚗</span> Parking privé</div>
+        <div class="amenity-item"><span class="amenity-icon">🌿</span> Jardin / Terrasse</div>
+        <div class="amenity-item"><span class="amenity-icon">🧹</span> Ménage inclus</div>
+        <div class="amenity-item"><span class="amenity-icon">☕</span> Petit-déjeuner</div>
+        <div class="amenity-item"><span class="amenity-icon">🔒</span> Coffre-fort</div>
+      </div>
+
+      <div class="detail-divider"></div>
+
+      <!-- Reviews -->
+      <h3 style="font-size:20px;margin-bottom:20px;">Avis des voyageurs</h3>
+      <div class="reviews-header">
+        <div class="overall-score" id="detail-score">4.96</div>
+        <div class="score-bars">
+          <div class="score-bar-row">
+            <span style="min-width:80px">Propreté</span>
+            <div class="bar-track"><div class="bar-fill" style="width:98%"></div></div>
+            <span>4.9</span>
+          </div>
+          <div class="score-bar-row">
+            <span style="min-width:80px">Exactitude</span>
+            <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+            <span>4.8</span>
+          </div>
+          <div class="score-bar-row">
+            <span style="min-width:80px">Emplacement</span>
+            <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+            <span>5.0</span>
+          </div>
+          <div class="score-bar-row">
+            <span style="min-width:80px">Communication</span>
+            <div class="bar-track"><div class="bar-fill" style="width:97%"></div></div>
+            <span>4.9</span>
+          </div>
+        </div>
+      </div>
+      <div class="review-cards">
+        <div class="review-card">
+          <div class="review-top">
+            <div class="reviewer-avatar">SC</div>
+            <div>
+              <div class="reviewer-name">Sophie C.</div>
+              <div class="review-date">Novembre 2024</div>
+            </div>
+          </div>
+          <p class="review-text">Un séjour absolument magique ! Le riad est encore plus beau qu'en photo. L'accueil de Mohammed était chaleureux et la terrasse au coucher du soleil... inoubliable.</p>
+        </div>
+        <div class="review-card">
+          <div class="review-top">
+            <div class="reviewer-avatar">KA</div>
+            <div>
+              <div class="reviewer-name">Karim A.</div>
+              <div class="review-date">Octobre 2024</div>
+            </div>
+          </div>
+          <p class="review-text">Parfait pour une escapade en famille. La piscine est superbe, les chambres très confortables. L'emplacement au cœur de la Medina est idéal pour tout explorer à pied.</p>
+        </div>
+        <div class="review-card">
+          <div class="review-top">
+            <div class="reviewer-avatar">LM</div>
+            <div>
+              <div class="reviewer-name">Laura M.</div>
+              <div class="review-date">Septembre 2024</div>
+            </div>
+          </div>
+          <p class="review-text">Le petit-déjeuner marocain servi sur la terrasse était exceptionnel. La décoration est authentique et raffinée. Je recommande vivement !</p>
+        </div>
+        <div class="review-card">
+          <div class="review-top">
+            <div class="reviewer-avatar">YB</div>
+            <div>
+              <div class="reviewer-name">Youssef B.</div>
+              <div class="review-date">Août 2024</div>
+            </div>
+          </div>
+          <p class="review-text">Hôte très réactif, logement propre et bien entretenu. La fontaine dans le patio crée une atmosphère très apaisante. On reviendra sans hésiter.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Booking Card -->
+    <div>
+      <div class="booking-card">
+        <div class="booking-price-row">
+          <span class="booking-price" id="booking-price">950 MAD</span>
+          <span class="booking-per-night">/nuit</span>
+          <span class="booking-rating" id="booking-rating">4.96 · 184 avis</span>
+        </div>
+
+        <div class="date-grid">
+          <div class="date-cell">
+            <div class="date-cell-label">Arrivée</div>
+            <input type="date" id="checkin-date">
+          </div>
+          <div class="date-cell">
+            <div class="date-cell-label">Départ</div>
+            <input type="date" id="checkout-date" onchange="calcTotal()">
+          </div>
+        </div>
+
+        <div class="guest-row">
+          <div>
+            <div class="guest-row-label">Voyageurs</div>
+            <div class="guest-row-val" id="booking-guests-label">2 voyageurs</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <button class="guest-btn" onclick="bookingGuests(-1)">−</button>
+            <span id="booking-guests-count" style="font-weight:600;font-size:16px">2</span>
+            <button class="guest-btn" onclick="bookingGuests(1)">+</button>
+          </div>
+        </div>
+
+        <button class="btn-reserve" onclick="alert('Réservation en cours…')">Réserver maintenant</button>
+        <p class="booking-note">Aucun montant ne sera débité pour l'instant</p>
+
+        <div class="price-breakdown">
+          <div class="price-row">
+            <span id="night-formula">950 MAD × 3 nuits</span>
+            <span id="nights-subtotal">2 850 MAD</span>
+          </div>
+          <div class="price-row">
+            <span>Frais de service DarKom</span>
+            <span id="service-fee">285 MAD</span>
+          </div>
+          <div class="price-row">
+            <span>Taxes</span>
+            <span id="taxes">190 MAD</span>
+          </div>
+          <div class="price-row total">
+            <span>Total</span>
+            <span id="grand-total">3 325 MAD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /detail-body -->
+
+  <!-- MOBILE STICKY BOOKING BAR -->
+  <div class="sticky-booking-bar">
+    <div class="sticky-price">
+      <strong id="sticky-price">950 MAD</strong>
+      <span>/nuit · ★ 4.96</span>
+    </div>
+    <button class="btn-sticky-reserve" onclick="alert('Réservation en cours…')">Réserver →</button>
+  </div>
+
+</div><!-- /page-detail -->
+
+<!-- ============================================================
+     MOBILE BOTTOM NAVIGATION
+============================================================ -->
+<div class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="nav-tab active" onclick="switchTab(this)">
+      <div class="tab-icon">🏠</div>
+      <div class="tab-label">Accueil</div>
+    </button>
+    <button class="nav-tab" onclick="switchTab(this)">
+      <div class="tab-icon">🔍</div>
+      <div class="tab-label">Explorer</div>
+    </button>
+    <button class="nav-tab" onclick="switchTab(this)">
+      <div class="tab-icon">📋</div>
+      <div class="tab-label">Réservations</div>
+    </button>
+    <button class="nav-tab" onclick="switchTab(this)">
+      <div class="tab-icon">👤</div>
+      <div class="tab-label">Profil</div>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /* ================================================================
+     PAGE NAVIGATION
+  ================================================================ */
+  let currentPage = 'home';
+
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    currentPage = name;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Show/hide sticky booking bar only on detail page
+    const bar = document.querySelector('.sticky-booking-bar');
+    if (bar) bar.style.display = name === 'detail' ? 'flex' : 'none';
+
+    // Trigger reveal animations
+    setTimeout(initReveal, 100);
+  }
+
+  function goSearch(query) {
+    const dest = query || document.querySelector('.float-search-inner input')?.value || '';
+    const heading = document.getElementById('sr-heading');
+    if (heading) heading.textContent = dest ? 'Résultats pour "' + dest + '"' : 'Toutes les propriétés';
+    showPage('search');
+  }
+
+  // Property data for detail page
+  const propertyData = {
+    riad:        { title:'Riad Zitoun', price:'950', rating:'4.96', reviews:'184', location:'Medina, Marrakech', type:'Riad entier', score:'4.96',
+                   img1:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img2:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img3:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop' },
+    villa:       { title:'Villa Nour', price:'3 400', rating:'4.92', reviews:'210', location:'Palmeraie, Marrakech', type:'Villa entière', score:'4.92',
+                   img1:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img2:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img3:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop' },
+    beachfront:  { title:'Villa Brise Marine', price:'2 100', rating:'4.88', reviews:'67', location:'Bord de mer, Agadir', type:'Villa entière', score:'4.88',
+                   img1:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img2:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img3:'https://images.pexels.com/photos/2901215/pexels-photo-2901215.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop' },
+    appartement: { title:'Appart Vue Mer', price:'580', rating:'4.79', reviews:'93', location:'Marina, Casablanca', type:'Appartement entier', score:'4.79',
+                   img1:'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200&h=700&fit=crop',
+                   img2:'https://images.pexels.com/photos/3933359/pexels-photo-3933359.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img3:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop' },
+    montagne:    { title:'Chalet Atlas', price:'1 650', rating:'4.97', reviews:'142', location:'Imlil, Haut Atlas', type:'Chalet entier', score:'4.97',
+                   img1:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img2:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img3:'https://images.pexels.com/photos/3933359/pexels-photo-3933359.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop' },
+    desert:      { title:'Sahara Luxury Camp', price:'2 800', rating:'5.0', reviews:'58', location:'Erg Chebbi, Merzouga', type:'Camp exclusif', score:'5.0',
+                   img1:'https://images.pexels.com/photos/2901215/pexels-photo-2901215.jpeg?auto=compress&cs=tinysrgb&w=1200&h=700&fit=crop',
+                   img2:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+                   img3:'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop' },
+  };
+
+  function showDetail(type) {
+    const d = propertyData[type] || propertyData['riad'];
+    // Update images
+    document.getElementById('detail-img-main').src  = d.img1;
+    document.getElementById('detail-img-2').src      = d.img2;
+    document.getElementById('detail-img-3').src      = d.img3;
+    // Update text
+    document.getElementById('detail-title').textContent    = d.title;
+    document.getElementById('detail-rating').textContent   = d.rating;
+    document.getElementById('detail-reviews').textContent  = '(' + d.reviews + ' avis)';
+    document.getElementById('detail-location').textContent = d.location;
+    document.getElementById('detail-type').textContent     = d.type;
+    document.getElementById('detail-score').textContent    = d.score;
+    // Booking card
+    document.getElementById('booking-price').textContent   = d.price + ' MAD';
+    document.getElementById('booking-rating').textContent  = d.rating + ' · ' + d.reviews + ' avis';
+    document.getElementById('sticky-price').textContent    = d.price + ' MAD';
+    // Reset total
+    calcTotal();
+    showPage('detail');
+  }
+
+  /* ================================================================
+     BOOKING CALCULATOR
+  ================================================================ */
+  let bookingGuestsNum = 2;
+
+  function bookingGuests(delta) {
+    bookingGuestsNum = Math.max(1, Math.min(10, bookingGuestsNum + delta));
+    document.getElementById('booking-guests-count').textContent = bookingGuestsNum;
+    document.getElementById('booking-guests-label').textContent = bookingGuestsNum + ' voyageur' + (bookingGuestsNum > 1 ? 's' : '');
+  }
+
+  function calcTotal() {
+    const ci = document.getElementById('checkin-date')?.value;
+    const co = document.getElementById('checkout-date')?.value;
+    const priceStr = document.getElementById('booking-price')?.textContent.replace(/[^\d]/g,'') || '950';
+    const nightly = parseInt(priceStr) || 950;
+
+    let nights = 3; // default
+    if (ci && co) {
+      const diff = (new Date(co) - new Date(ci)) / 86400000;
+      if (diff > 0) nights = diff;
+    }
+
+    const subtotal = nightly * nights;
+    const service  = Math.round(subtotal * 0.10);
+    const taxes    = Math.round(subtotal * 0.07);
+    const total    = subtotal + service + taxes;
+
+    const fmt = n => n.toLocaleString('fr-FR') + ' MAD';
+    document.getElementById('night-formula').textContent  = fmt(nightly).replace(' MAD','') + ' MAD × ' + nights + ' nuit' + (nights > 1 ? 's' : '');
+    document.getElementById('nights-subtotal').textContent = fmt(subtotal);
+    document.getElementById('service-fee').textContent    = fmt(service);
+    document.getElementById('taxes').textContent          = fmt(taxes);
+    document.getElementById('grand-total').textContent    = fmt(total);
+  }
+
+  // Set default dates
+  window.addEventListener('DOMContentLoaded', () => {
+    const today = new Date();
+    const plus3 = new Date(today); plus3.setDate(today.getDate() + 3);
+    const plus6 = new Date(today); plus6.setDate(today.getDate() + 6);
+    const fmt = d => d.toISOString().split('T')[0];
+    const ci = document.getElementById('checkin-date');
+    const co = document.getElementById('checkout-date');
+    if (ci) ci.value = fmt(plus3);
+    if (co) co.value = fmt(plus6);
+    calcTotal();
+  });
+
+  /* ================================================================
+     MOBILE TAB SWITCHING
+  ================================================================ */
+  function switchTab(el) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    const label = el.querySelector('.tab-label')?.textContent.trim().toLowerCase();
+    if (label === 'explorer' || label === 'explore') goSearch();
+    else if (label === 'accueil' || label === 'home') showPage('home');
+  }
+
+  /* ================================================================
+     CATEGORY FILTER — HOMEPAGE
+  ================================================================ */
+  function filterCategory(el, type) {
+    document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    const cards = document.querySelectorAll('#page-home .prop-card');
+    let delay = 0;
+    cards.forEach(card => {
+      const match = type === 'all' || card.dataset.type === type;
+      if (match) {
+        card.style.display = 'block';
+        card.style.animation = 'none';
+        void card.offsetHeight;
+        card.style.animationDelay = delay + 'ms';
+        card.style.animation = 'fadeInUp .4s ease both';
+        delay += 60;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  /* ================================================================
+     SEARCH RESULTS FILTER & SORT
+  ================================================================ */
+  let activePillType = 'all';
+
+  function pillFilter(el, type) {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    activePillType = type;
+    applyResultsFilter();
+  }
+
+  function applyResultsFilter() {
+    const cards = document.querySelectorAll('#resultsGrid .prop-card');
+    const maxPrice = parseInt(document.getElementById('priceSlider')?.value || 5000);
+    let visible = 0;
+    cards.forEach(card => {
+      const typeMatch  = activePillType === 'all' || card.dataset.type === activePillType;
+      const priceMatch = parseInt(card.dataset.price || 0) <= maxPrice;
+      const show = typeMatch && priceMatch;
+      card.style.display = show ? 'block' : 'none';
+      if (show) visible++;
+    });
+    const el = document.getElementById('resultsCount');
+    if (el) el.textContent = visible;
+  }
+
+  function updatePrice(val) {
+    const el = document.getElementById('priceMax');
+    if (el) el.textContent = parseInt(val).toLocaleString('fr-FR') + ' MAD';
+    applyResultsFilter();
+  }
+
+  function sortResults(method) {
+    const grid = document.getElementById('resultsGrid');
+    if (!grid) return;
+    const cards = [...grid.querySelectorAll('.prop-card')];
+    cards.sort((a, b) => {
+      if (method === 'price-asc')  return parseInt(a.dataset.price) - parseInt(b.dataset.price);
+      if (method === 'price-desc') return parseInt(b.dataset.price) - parseInt(a.dataset.price);
+      if (method === 'rating')     return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+      return 0;
+    });
+    cards.forEach(c => grid.appendChild(c));
+  }
+
+  function resetFilters() {
+    activePillType = 'all';
+    document.querySelectorAll('.filter-pill').forEach((p,i) => p.classList.toggle('active', i===0));
+    const slider = document.getElementById('priceSlider');
+    if (slider) { slider.value = 5000; updatePrice(5000); }
+    document.querySelectorAll('.check-item input').forEach(c => c.checked = true);
+    applyResultsFilter();
+  }
+
+  /* ================================================================
+     GUESTS — SIDEBAR
+  ================================================================ */
+  let guestsNum = 2;
+
+  function changeGuests(delta) {
+    guestsNum = Math.max(1, Math.min(12, guestsNum + delta));
+    const el = document.getElementById('guestCount');
+    if (el) el.textContent = guestsNum;
+  }
+
+  /* ================================================================
+     FAVOURITE TOGGLE
+  ================================================================ */
+  function toggleFav(btn) {
+    event.stopPropagation();
+    const isFav = btn.textContent === '❤️';
+    btn.textContent = isFav ? '🤍' : '❤️';
+    btn.style.transform = 'scale(1.35)';
+    setTimeout(() => btn.style.transform = '', 220);
+  }
+
+  /* ================================================================
+     HOMEPAGE SEARCH
+  ================================================================ */
+  function handleSearch() {
+    const dest = document.querySelector('#page-home .search-input')?.value.trim() || '';
+    goSearch(dest);
+  }
+
+  /* ================================================================
+     NAVBAR SCROLL EFFECT
+  ================================================================ */
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('.nav');
+    if (nav) nav.style.boxShadow = window.scrollY > 20 ? '0 2px 16px rgba(0,0,0,0.08)' : 'none';
+  });
+
+  /* ================================================================
+     SCROLL REVEAL (Intersection Observer)
+  ================================================================ */
+  function initReveal() {
+    const els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('visible'));
+      return;
+    }
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    els.forEach(el => obs.observe(el));
+  }
+
+  /* ================================================================
+     KEYBOARD SHORTCUTS
+  ================================================================ */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (currentPage === 'home') handleSearch();
+    }
+    if (e.key === 'Escape' && currentPage !== 'home') showPage('home');
+  });
+
+  /* ================================================================
+     INIT
+  ================================================================ */
+  window.addEventListener('load', () => {
+    initReveal();
+    // Add reveal class to all sections dynamically
+    document.querySelectorAll('.section, .trust-strip, .cta-banner, .featured-grid, .cities-grid').forEach((el, i) => {
+      el.classList.add('reveal');
+      if (i % 3 === 1) el.classList.add('reveal-delay-1');
+      if (i % 3 === 2) el.classList.add('reveal-delay-2');
+    });
+    initReveal();
+  });
+</script>
+</body>
+</html>
